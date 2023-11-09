@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- AlpineJS -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Project F1</title>
+</head>
+
+<body class="bg-light">
+    <nav class="p-0 m-0 navbar navbar-expand-md navbar-light bg-dark sticky-top">
+        <a class="p-2 pt-3 px-4 m-0 navbar-brand">
+            <h1 style="color: white;">Project F1</h1>
+        </a>
+    </nav>
+    <article class="container-fluid px-4 pt-4 py-2 pb-5 bg-light">
+        <div x-data="{
+        driver: null,
+        team: null,
+        async getDriver() {
+            this.driver = await (await fetch('https://api-service-rmetdep.cloud.okteto.net/driver')).json();
+        },
+        async getTeam() {
+            this.team = await (await fetch('https://api-service-rmetdep.cloud.okteto.net/team')).json();
+        },
+    }" x-init="getDriver(),getTeam()">
+            <h3 class="pb-3">Your driver:</h3>
+            <p>Driver: <strong x-text="driver.driver">Loading...</strong></p>
+            <p>Team: <strong x-text="team.team">Loading...</strong></p>
+            <button class="btn btn-outline-primary" @click="getDriver(), getTeam()">Update Data</button>
+        </div>
+        <div x-data="{
+        circuitresponse: null,
+        circuitpost: null,
+        async postcircuit() {
+            this.circuitresponse = await (await fetch('https://api-service-rmetdep.cloud.okteto.net/addciruit', 
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: this.circuitpost,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })).json();
+
+            console.log(this.circuitresponse);
+        },
+    }">
+            <h3 class="pt-5 pb-3">Add a circuit:</h3>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter a circuit" aria-label="Enter a circuit" aria-describedby="circuit" x-model="circuitpost">
+                <button class="btn btn-outline-primary" type="button" id="button-addon2" @click="postcircuit()">Add</button>
+            </div>
+            <p class="pt-2 "><strong x-text="circuitresponse.response ">Loading...</strong></p>
+        </div>
+    </article>
+</body>
+
+</html>
