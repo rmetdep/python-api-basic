@@ -9,40 +9,46 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <title>Project F1</title>
+    <title>Task Manager</title>
 </head>
 
 <body class="bg-light">
     <nav class="p-0 m-0 navbar navbar-expand-md navbar-light bg-dark sticky-top">
         <a class="p-2 pt-3 px-4 m-0 navbar-brand">
-            <h1 style="color: white;">Project F1</h1>
+            <h1 style="color: white;">Task Manager</h1>
         </a>
     </nav>
     <article class="container-fluid px-4 pt-4 py-2 pb-5 bg-light">
         <div x-data="{
-        driver: null,
-        team: null,
-        async getDriver() {
-            this.driver = await (await fetch('https://api-service-rmetdep.cloud.okteto.net/driver')).json();
-        },
-        async getTeam() {
-            this.team = await (await fetch('https://api-service-rmetdep.cloud.okteto.net/team')).json();
-        },
-    }" x-init="getDriver(),getTeam()">
-            <h3 class="pb-3">Your driver:</h3>
-            <p>Driver: <strong x-text="driver.driver">Loading...</strong></p>
-            <p>Team: <strong x-text="team.team">Loading...</strong></p>
-            <button class="btn btn-outline-primary" @click="getDriver(), getTeam()">Update Data</button>
+        task: null,
+        async getTask() {
+            this.task = await (await fetch('https://task-api-rmetdep.cloud.okteto.net/tasks')).json();
+        }
+    }" x-init="getTask()">
+            <h3 class="pb-3">Tasks</h3>
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Done</th>
+                </tr>
+                <tr>
+                    <td><strong x-text="task.taskTitle">Loading...</strong></td>
+                    <td><strong x-text="task.taskDescription">Loading...</strong></td>
+                    <td><strong x-text="task.taskDone">Loading...</strong></td>
+                </tr>
+            </table>
+            <button class="btn btn-outline-primary" @click="getTask()">Update Data</button>
         </div>
         <div x-data="{
         circuitresponse: null,
         circuitpost: null,
         async postcircuit() {
-            this.circuitresponse = await (await fetch('https://api-service-rmetdep.cloud.okteto.net/addciruit', 
+            this.circuitresponse = await (await fetch('https://task-api-rmetdep.cloud.okteto.net/tasks', 
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    name: this.circuitpost,
+                    name: this.taskpost,
                 }),
                 headers: {
                     'Content-type': 'application/json; charset=UTF-8',

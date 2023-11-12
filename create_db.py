@@ -5,25 +5,15 @@ conn = sqlite3.connect('data.db')
 print("Opened database successfully")
 
 # raw data
-driver = ['Valtteri Bottas', 'Guanyu Zhou', 'Pierre Gasly', 'Yuki Tsunoda', 'Fernando Alonso', 'Esteban Ocon', 'Sebastian Vettel', 'Lance Stroll', 'Charles Leclerc', 'Carlos Sainz Jr.', 'Mick Schumacher', 'Kevin Magnussen', 'Daniel Ricciardo', 'Lando Norris', 'Lewis Hamilton', 'George Russell', 'Max Verstappen', 'Sergio Pérez', 'Alex Albon', 'Nicholas Latifi']
-team = ['Alfa Romeo Racing', 'AlphaTauri', 'Alpine', 'Aston Martin', 'Ferrari', 'Haas', 'McLaren', 'Mercedes', 'Red Bull Racing', 'Williams']
-circuits = ['Abu Dhabi', 'Azerbaijan', 'Bahrain', 'Barcelona', 'Budapest', 'Imola', 'Istanbul', 'Jeddah', 'Monaco', 'Montreal', 'Portimao', 'Silverstone', 'Sochi', 'Suzuka']
+task = ["'Water', 'Plants', 'False'", "'Homework', 'basic API', 'False'", "'Make food', 'Belgian Fries with Pork tenderloin with mushroom sauce', 'False'"]
 
 # create tables
-conn.execute("CREATE TABLE driver (driverId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, driverName TEXT);")
-conn.execute("CREATE TABLE team (teamId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, teamName TEXT);")
-conn.execute("CREATE TABLE circuits (circuitId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, circuitName TEXT);")
+conn.execute("CREATE TABLE task (taskId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, taskTitle TEXT, taskDescription TEXT, taskDone BOOL);")
 print("Created tables successfully")
 
 # insert data
-for x in driver:
-    conn.execute("INSERT INTO driver (driverName) VALUES ('" + x + "');")
-
-for x in team:
-    conn.execute("INSERT INTO team (teamName) VALUES ('" + x + "');")
-
-for x in circuits:
-    conn.execute("INSERT INTO circuits (circuitName) VALUES ('" + x + "');")
+for x in task:
+    conn.execute("INSERT INTO task (taskTitle, taskDescription, taskDone) VALUES (" + x + ");")
 
 print("Inserted data successfully")
 

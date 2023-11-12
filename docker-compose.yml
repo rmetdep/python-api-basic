@@ -3,24 +3,9 @@ networks:
   api: {}
 services:
   api-service:
-    # build: ./api
-    image: r0893183/python-api
-    container_name: api-service
+    image: r0893183/python-api-basic
+    container_name: task-api
     networks:
-     - api
+      - api
     ports:
-     - 8000:8000
-#   sql-service:
-#     build: ./db
-#     container_name: sql-service
-#     networks:
-#      - api
-#     ports:
-#      - 3306:3306
-#     environment:
-#       MYSQL_ROOT_PASSWORD: apidev1!
-#       MYSQL_DATABASE: api
-#       MYSQL_USER: apiaccess
-#       MYSQL_PASSWORD: apidev1!
-# volumes:
-#   db-data:
+      - 8000:8000
