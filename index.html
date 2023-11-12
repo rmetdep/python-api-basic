@@ -13,18 +13,25 @@
 </head>
 
 <body class="bg-light">
+    <script>
+        function fetchData(url) {
+            return fetch(url).then(response => response.json());
+        }
+
+        Alpine.data('taskData', () => ({
+            taskData: null,
+            async getTask() {
+                this.taskData = await fetchData('https://task-api-rmetdep.cloud.okteto.net/tasks/1');
+            },
+        }));
+    </script>
     <nav class="p-0 m-0 navbar navbar-expand-md navbar-light bg-dark sticky-top">
         <a class="p-2 pt-3 px-4 m-0 navbar-brand">
             <h1 style="color: white;">Task Manager</h1>
         </a>
     </nav>
     <article class="container-fluid px-4 pt-4 py-2 pb-5 bg-light">
-        <div x-data="{
-        task: null,
-        async getTask() {
-            this.task = await (await fetch('https://task-api-rmetdep.cloud.okteto.net/tasks')).json();
-        }
-    }" x-init="getTask()">
+        <div x-data="{ taskData: null }" x-init="getTask()">
             <h3 class="pb-3">Tasks</h3>
             <table>
                 <tr>
@@ -32,13 +39,16 @@
                     <th>Description</th>
                     <th>Done</th>
                 </tr>
-                <tr>
-                    <td><strong x-text="task.taskTitle">Loading...</strong></td>
-                    <td><strong x-text="task.taskDescription">Loading...</strong></td>
-                    <td><strong x-text="task.taskDone">Loading...</strong></td>
-                </tr>
+                <template x-for="x in taskData" :key="taskData.taskId">
+                    <tr>
+                        <td><strong x-text="taskData.taskTitle">Loading...</strong></td>
+                        <td><strong x-text="taskData.taskDescription">Loading...</strong></td>
+                        <td><strong x-text="taskData.taskDone">Loading...</strong></td>
+                    </tr>
+                </template>
             </table>
-            <button class="btn btn-outline-primary" @click="getTask()">Update Data</button>
+            <strong x-text="taskData">Loading...</strong>
+            <button class="btn btn-outline-primary" @click="getTask">Update Data</button>
         </div>
         <div x-data="{
         circuitresponse: null,
